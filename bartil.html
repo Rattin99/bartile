@@ -1,0 +1,185 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Bartile — 3D Tile Configurator Mockup</title>
+<style>
+  :root{
+    --brand-red:#890a00;
+    --brand-yellow:#f1b400;
+    --bg:#f7f7f7;
+    --muted:#6b6b6b;
+    --card:#ffffff;
+    --shadow: 0 6px 18px rgba(15,15,15,0.08);
+    --radius:12px;
+    --gap:24px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+  body{margin:0;background:linear-gradient(#fafafa,#f3f3f3);color:#222}
+  header{
+    height:72px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 32px;background:#fff;box-shadow:0 2px 6px rgba(20,20,20,0.04);
+    position:sticky;top:0;z-index:10;
+  }
+  .logo{display:flex;align-items:center;gap:12px}
+  .logo .mark{width:36px;height:36px;border-radius:6px;background:var(--brand-red);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+  .tag{font-weight:600;color:#111}
+  .header-cta{display:flex;gap:12px;align-items:center}
+  .btn{padding:10px 14px;border-radius:9px;border:1px solid transparent;cursor:pointer;font-weight:600}
+  .btn.primary{background:var(--brand-red);color:#fff}
+  .btn.ghost{background:#fff;color:var(--brand-red);border:1px solid var(--brand-red)}
+  main{display:flex;gap:var(--gap);padding:32px;max-width:1280px;margin:24px auto}
+  /* Left sidebar */
+  .sidebar{width:300px;background:var(--bg);border-radius:12px;padding:20px;box-shadow:var(--shadow);height:760px;overflow:auto}
+  .section{margin-bottom:18px}
+  .section h4{margin:0 0 10px 0;color:var(--brand-red);font-size:13px;letter-spacing:0.6px}
+  .profiles{display:flex;flex-direction:column;gap:10px}
+  .profile{display:flex;gap:10px;align-items:center;padding:8px;border-radius:9px;background:#fff;border:1px solid rgba(0,0,0,0.04)}
+  .profile img{width:72px;height:48px;object-fit:cover;border-radius:6px;background:linear-gradient(135deg,#eee,#ddd)}
+  .profile span{font-weight:600;color:#333}
+  .swatches{display:flex;flex-wrap:wrap;gap:8px}
+  .swatch{width:36px;height:36px;border-radius:6px;border:1px solid rgba(0,0,0,0.06);box-shadow:0 2px 6px rgba(0,0,0,0.06)}
+  .blend{padding:8px 10px;background:linear-gradient(90deg,var(--brand-red),var(--brand-yellow));color:#fff;border-radius:8px;font-weight:700;cursor:pointer}
+  .toggles{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{padding:8px 10px;background:#fff;border-radius:10px;border:1px solid rgba(0,0,0,0.06);cursor:pointer;font-weight:600}
+  .edge-row{display:flex;gap:8px;align-items:center}
+  .small-preview{width:60px;height:36px;background:linear-gradient(135deg,#eee,#ddd);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#666}
+  /* Center viewer */
+  .viewer{flex:1;background:var(--card);border-radius:12px;padding:20px;box-shadow:var(--shadow);min-height:760px;display:flex;flex-direction:column;align-items:center}
+  .viewer-viewport{flex:1;width:100%;border-radius:10px;background:linear-gradient(180deg,#fff,#f2f2f2);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .viewer-viewport .placeholder{width:64%;height:64%;border-radius:14px;background:repeating-linear-gradient(135deg,#eee,#eee 12px,#ddd 12px,#ddd 24px);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--muted);box-shadow:inset 0 -8px 40px rgba(0,0,0,0.03)}
+  .controls-bottom{display:flex;gap:10px;padding:14px 6px;align-items:center}
+  .icon-btn{width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,0.04);cursor:pointer}
+  .lighting{margin-left:auto;display:flex;gap:8px;align-items:center}
+  /* Right preview */
+  .preview{width:380px;background:var(--card);border-radius:12px;padding:18px;box-shadow:var(--shadow);height:760px;display:flex;flex-direction:column;gap:12px}
+  .preview h3{margin:6px 0 0 0}
+  .iso{flex:1;border-radius:10px;background:linear-gradient(180deg,#fafafa,#f3f3f3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .iso .roof{width:86%;height:46%;background:repeating-linear-gradient(90deg,#d6cfc6,#d6cfc6 12px,#cfc6bb 12px,#cfc6bb 24px);border-radius:6px;box-shadow:0 8px 30px rgba(10,10,10,0.06);transform:skewX(-20deg)}
+  .iso .house{position:absolute;bottom:8%;left:8%;width:80%;height:80%;display:flex;align-items:flex-end;justify-content:center}
+  .fullbtn{padding:12px 14px;border-radius:10px;background:var(--brand-red);color:#fff;text-align:center;font-weight:700}
+  footer{margin-top:28px;padding:18px 32px;background:#1e1e1e;color:#fff;border-radius:12px;max-width:1280px;margin-left:auto;margin-right:auto}
+  /* Small helpers */
+  .muted{color:var(--muted);font-size:13px}
+  .label{font-size:13px;color:#333;font-weight:700;margin-bottom:8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><div class="mark">B</div><div><div style="font-weight:800">Bartile</div><div style="font-size:12px;color:var(--muted)">Your last roof, first.</div></div></div>
+  <div class="tag">3D Tile Configurator</div>
+  <div class="header-cta"><button class="btn primary">Get a Quote</button><button class="btn ghost">Find a Dealer</button></div>
+</header>
+
+<main>
+  <aside class="sidebar" aria-label="Configurator Controls">
+    <div class="section">
+      <h4>Tile Profiles</h4>
+      <div class="profiles">
+        <label class="profile"><img src="" alt="New England Slate"/><span>New England Slate</span></label>
+        <label class="profile"><img src="" alt="Split Timber"/><span>Split Timber</span></label>
+        <label class="profile"><img src="" alt="Sierra Mission"/><span>Sierra Mission</span></label>
+        <label class="profile"><img src="" alt="European"/><span>European</span></label>
+        <label class="profile"><img src="" alt="Legendary Slate"/><span>Legendary Slate</span></label>
+        <label class="profile"><img src="" alt="Legendary Split Timber"/><span>Legendary Split Timber</span></label>
+        <label class="profile"><img src="" alt="Yorkshire"/><span>Yorkshire</span></label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Colors</h4>
+      <div class="swatches" aria-hidden="false">
+        <div class="swatch" style="background:#3b3b3b"></div>
+        <div class="swatch" style="background:#6b3119"></div>
+        <div class="swatch" style="background:#8b6f4a"></div>
+        <div class="swatch" style="background:#b29a7e"></div>
+        <div class="swatch" style="background:#4a6b3b"></div>
+        <div class="swatch" style="background:#2d5f83"></div>
+        <div class="swatch" style="background:#7b2b2b"></div>
+        <div class="swatch" style="background:#d1c7be"></div>
+      </div>
+      <div style="margin-top:10px"><button class="blend">Blend (700+)</button></div>
+    </div>
+
+    <div class="section">
+      <h4>Textures</h4>
+      <div class="toggles">
+        <div class="chip">Straight Brushed</div>
+        <div class="chip">Swirl Brushed</div>
+        <div class="chip">Cobbled</div>
+        <div class="chip">Vintage</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Tile Edges</h4>
+      <div class="edge-row">
+        <div class="small-preview">Straight</div>
+        <div class="small-preview">Newcastle</div>
+        <div class="small-preview">Manchester</div>
+        <div class="small-preview">Ruffcut</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Layout</h4>
+      <div class="toggles">
+        <div class="chip">Straight</div>
+        <div class="chip">Cottage</div>
+      </div>
+    </div>
+
+  </aside>
+
+  <section class="viewer" aria-label="3D Model Viewer">
+    <div style="width:100%;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div>
+        <div style="font-size:14px;color:var(--muted)">Model Preview</div>
+        <div style="font-weight:800;font-size:20px">Roof Tile — New England Slate • Charcoal • Straight Brushed</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="muted">Lighting</div>
+        <div style="width:12px;height:12px;background:var(--brand-yellow);border-radius:50%"></div>
+      </div>
+    </div>
+
+    <div class="viewer-viewport">
+      <div class="placeholder">3D Model Viewer Placeholder<br><small class="muted">(Interactive Three.js model will replace this)</small></div>
+    </div>
+
+    <div class="controls-bottom" style="width:100%">
+      <div class="icon-btn" title="Rotate">⤾</div>
+      <div class="icon-btn" title="Zoom">🔍</div>
+      <div class="icon-btn" title="Pan">✥</div>
+      <div class="lighting"><div class="muted">Env</div><div class="chip">Day</div><div class="chip">Dusk</div></div>
+    </div>
+  </section>
+
+  <aside class="preview" aria-label="Installed Preview">
+    <h3>See Your Roof Installed</h3>
+    <div class="iso" role="img" aria-label="Isometric house preview">
+      <div class="house"><div class="roof"></div></div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div style="flex:1" class="muted">House style</div>
+      <div style="display:flex;gap:6px">
+        <div class="chip">Modern</div>
+        <div class="chip">Cottage</div>
+        <div class="chip">Farmhouse</div>
+      </div>
+    </div>
+    <div style="margin-top:6px"><div class="fullbtn">Full Screen Preview</div></div>
+  </aside>
+</main>
+
+<footer>
+  <div style="display:flex;justify-content:space-between;max-width:1280px;margin:0 auto">
+    <div>Warranty | Download Brochure | Spec Sheets</div>
+    <div>Contact Us</div>
+  </div>
+</footer>
+
+</body>
+</html>
